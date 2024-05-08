@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hui.life.db.mapper.ShopRecommendationsMapper">
+
+    <resultMap id="ShopRecommendationsResult" type="com.hui.life.db.entity.ShopRecommendationsEntity">
+        <id column="id" property="id" />
+        <result column="shop_id" property="shopId" />
+        <result column="weight" property="weight" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.hui.life.db.entity.ShopRecommendationsEntity">
+        INSERT INTO shop_recommendations (shop_id, weight)
+        VALUES (#{shopId}, #{weight})
+    </insert>
+
+    <select id="findById" resultMap="ShopRecommendationsResult">
+        SELECT * FROM shop_recommendations WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="ShopRecommendationsResult">
+        SELECT * FROM shop_recommendations
+    </select>
+
+    <update id="update" parameterType="com.hui.life.db.entity.ShopRecommendationsEntity">
+        UPDATE shop_recommendations
+        SET shop_id = #{shopId}, weight = #{weight}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM shop_recommendations WHERE id = #{id}
+    </delete>
+
+</mapper>

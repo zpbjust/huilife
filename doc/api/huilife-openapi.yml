@@ -1,0 +1,964 @@
+openapi: 3.0.3
+info:
+  title: Huilife OpenAPI
+  description: Huilife OpenAPI
+  version: '1.0.20240415'
+servers:
+  - url: https://ingress.ai-messages.domain
+
+x-service-name: "huilife"
+x-service-version: "v1"
+x-service-interface: "rest"
+x-internal-api: true
+x-auth-required: true
+x-throttling-group: Heavy
+x-team: "Hui Life"
+x-docs-level: Internal
+x-availability: High
+x-app-permission: AIInternal
+
+tags:
+  - name: Shops
+    description: Operations related to shops
+  - name: Categories
+    description: Operations related to categories
+  - name: HomeImages
+    description: Operations related to home images
+  - name: IntroImages
+    description: Operations related to intro images
+  - name: ShopRecommendations
+    description: Operations related to shop recommendations
+  - name: Activities
+    description: Operations related to activities
+  - name: ActivityImages
+    description: Operations related to activity images
+
+paths:
+  ### shops ###
+  /shops/{id}:
+    get:
+      summary: Find shop by ID
+      operationId: getShopById
+      tags:
+        - Shops
+      description: Returns a shop object based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A shop object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+        '404':
+          description: Shop not found
+    put:
+      summary: Update a shop
+      operationId: updateShop
+      tags:
+        - Shops
+      description: Updates a shop based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+      responses:
+        '200':
+          description: The updated shop object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+        '404':
+          description: Shop not found
+    delete:
+      summary: Delete a shop
+      operationId: deleteShop
+      tags:
+        - Shops
+      description: Deletes a shop based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Shop deleted
+  /shops:
+    get:
+      summary: Get all shops
+      operationId: getAllShops
+      tags:
+        - Shops
+      description: Returns all shops from the system that the user has access to
+      responses:
+        '200':
+          description: A list of shops
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+    post:
+      summary: Create a new shop
+      operationId: createShop
+      tags:
+        - Shops
+      description: Creates a new shop
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+      responses:
+        '201':
+          description: The created shop object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+  /shops/category/{categoryId}:
+    get:
+      summary: Get shops by category ID
+      operationId: getShopsByCategoryId
+      tags:
+        - Shops
+      description: Returns shops based on a single category ID
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of shops
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+        '404':
+          description: Shops not found
+
+  ### category ###
+  /categories/{id}:
+    get:
+      summary: Find category by ID
+      operationId: getCategoryById
+      tags:
+        - Categories
+      description: Returns a category object based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A category object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+    put:
+      summary: Update a category
+      operationId: updateCategory
+      tags:
+        - Categories
+      description: Updates a category based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: The updated category object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+    delete:
+      summary: Delete a category
+      operationId: deleteCategory
+      tags:
+        - Categories
+      description: Deletes a category based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Category deleted
+  /categories:
+    get:
+      summary: Get all categories
+      operationId: getAllCategories
+      tags:
+        - Categories
+      description: Returns all categories from the system that the user has access to
+      responses:
+        '200':
+          description: A list of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      summary: Create a new category
+      operationId: createCategory
+      tags:
+        - Categories
+      description: Creates a new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: The created category object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /categories/description/{description}:
+    get:
+      summary: Get category by description
+      operationId: getCategoryByDescription
+      tags:
+        - Categories
+      description: Returns a category object based on a single description
+      parameters:
+        - name: description
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A category object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+  /categories/name/{name}:
+    get:
+      summary: Get category by name
+      operationId: getCategoryByName
+      tags:
+        - Categories
+      description: Returns a category object based on a single name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A category object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+
+  ### homeImages ###
+  /shops/{shopId}/homeImages:
+    get:
+      summary: Find home images by shop ID
+      operationId: getHomeImagesByShopId
+      tags:
+        - HomeImages
+      description: Returns home images based on a single shop ID
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of home images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShopHomeImages'
+        '404':
+          description: Home images not found
+    post:
+      summary: Add a new home image to a shop
+      operationId: addHomeImageToShop
+      tags:
+        - HomeImages
+      description: Adds a new home image to a shop based on a single shop ID
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: The created home image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopHomeImages'
+    delete:
+      summary: Delete all home images of a shop
+      operationId: deleteAllHomeImagesOfShop
+      tags:
+        - HomeImages
+      description: Deletes all home images of a shop based on a single shop ID
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Home images deleted
+  /homeImages/{id}:
+    get:
+      summary: Find home image by ID
+      operationId: getHomeImageById
+      tags:
+        - HomeImages
+      description: Returns a home image object based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A home image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopHomeImages'
+        '404':
+          description: Home image not found
+    put:
+      summary: Update a home image
+      operationId: updateHomeImage
+      tags:
+        - HomeImages
+      description: Updates a home image based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopHomeImages'
+      responses:
+        '200':
+          description: The updated home image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopHomeImages'
+        '404':
+          description: Home image not found
+    delete:
+      summary: Delete a home image
+      operationId: deleteHomeImage
+      tags:
+        - HomeImages
+      description: Deletes a home image based on a single ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Home image deleted
+
+    ### introImages ###
+  /shops/{shopId}/introImages:
+    get:
+      summary: Find intro images by shop ID
+      operationId: getIntroImagesByShopId
+      tags:
+        - IntroImages
+      description: Returns intro images based on a single shop ID
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of intro images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShopIntroImages'
+        '404':
+          description: Intro images not found
+    post:
+      summary: Add a new intro image to a shop
+      operationId: addIntroImageToShop
+      tags:
+        - IntroImages
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: The created intro image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopIntroImages'
+    delete:
+      summary: Delete all intro images of a shop
+      operationId: deleteAllIntroImagesOfShop
+      tags:
+        - IntroImages
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Intro images deleted
+  /introImages/{id}:
+    get:
+      summary: Find intro image by ID
+      operationId: getIntroImageById
+      tags:
+        - IntroImages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An intro image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopIntroImages'
+        '404':
+          description: Intro image not found
+    put:
+      summary: Update an intro image
+      operationId: updateIntroImage
+      tags:
+        - IntroImages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopIntroImages'
+      responses:
+        '200':
+          description: The updated intro image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopIntroImages'
+        '404':
+          description: Intro image not found
+    delete:
+      summary: Delete an intro image
+      operationId: deleteIntroImage
+      tags:
+        - IntroImages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Intro image deleted
+
+  ### shopRecommendations ###
+  /shopRecommendations/{id}:
+    get:
+      summary: Find shop recommendation by ID
+      operationId: getShopRecommendationById
+      tags:
+        - ShopRecommendations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A shop recommendation object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopRecommendations'
+        '404':
+          description: Shop recommendation not found
+    put:
+      summary: Update a shop recommendation
+      operationId: updateShopRecommendation
+      tags:
+        - ShopRecommendations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopRecommendations'
+      responses:
+        '200':
+          description: The updated shop recommendation object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopRecommendations'
+        '404':
+          description: Shop recommendation not found
+    delete:
+      summary: Delete a shop recommendation
+      operationId: deleteShopRecommendation
+      tags:
+        - ShopRecommendations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Shop recommendation deleted
+  /shopRecommendations:
+    get:
+      summary: Get all shop recommendations
+      operationId: getAllShopRecommendations
+      tags:
+        - ShopRecommendations
+      responses:
+        '200':
+          description: A list of shop recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShopRecommendations'
+    post:
+      summary: Create a new shop recommendation
+      operationId: createShopRecommendation
+      tags:
+        - ShopRecommendations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopRecommendations'
+      responses:
+        '201':
+          description: The created shop recommendation object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopRecommendations'
+
+  ### activities ###
+
+  /activities/{id}:
+    get:
+      summary: Find activity by ID
+      operationId: getActivityById
+      tags:
+        - Activities
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An activity object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activities'
+        '404':
+          description: Activity not found
+    put:
+      summary: Update an activity
+      operationId: updateActivity
+      tags:
+        - Activities
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activities'
+      responses:
+        '200':
+          description: The updated activity object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activities'
+        '404':
+          description: Activity not found
+    delete:
+      summary: Delete an activity
+      operationId: deleteActivity
+      tags:
+        - Activities
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Activity deleted
+  /activities:
+    get:
+      summary: Get all activities
+      operationId: getAllActivities
+      tags:
+        - Activities
+      responses:
+        '200':
+          description: A list of activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+    post:
+      summary: Create a new activity
+      operationId: createActivity
+      tags:
+        - Activities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activities'
+      responses:
+        '201':
+          description: The created activity object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activities'
+
+  ### activityImages ###
+  /activities/{activityId}/images:
+    get:
+      summary: Find images by activity ID
+      operationId: getImagesByActivityId
+      tags:
+        - ActivityImages
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityImages'
+        '404':
+          description: Images not found
+    post:
+      summary: Add a new image to an activity
+      operationId: addImageToActivity
+      tags:
+        - ActivityImages
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: The created image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityImages'
+  /images/{id}:
+    get:
+      summary: Find image by ID
+      operationId: getImageById
+      tags:
+        - ActivityImages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityImages'
+        '404':
+          description: Image not found
+    put:
+      summary: Update an image
+      operationId: updateImage
+      tags:
+        - ActivityImages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityImages'
+      responses:
+        '200':
+          description: The updated image object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityImages'
+        '404':
+          description: Image not found
+    delete:
+      summary: Delete an image
+      operationId: deleteImage
+      tags:
+        - ActivityImages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Image deleted
+
+### components ###
+
+components:
+  schemas:
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        categoryId:
+          type: integer
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        phone:
+          type: string
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        parentId:
+          type: integer
+    ShopHomeImages:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopId:
+          type: integer
+        imageUrl:
+          type: string
+
+    ShopIntroImages:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopId:
+          type: integer
+        imageUrl:
+          type: string
+    ShopRecommendations:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopId:
+          type: integer
+        weight:
+          type: integer
+    Activities:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        shopId:
+          type: integer
+    ActivityImages:
+      type: object
+      properties:
+        id:
+          type: integer
+        activityId:
+          type: integer
+        imageUrl:
+          type: string
+
+
+
+

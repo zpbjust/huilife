@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5432}/${DB_NAME:huilife}?currentSchema=public&stringtype=unspecified
+      username: ${DB_USR:huilife}
+      password: ${DB_PWD:huilife}
+      auto-commit: true
+      idle-timeout: 60000
+      pool-name: HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 60000
+      connection-test-query: SELECT 1
+      validation-timeout: 3000
+    flyway:
+      url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5432}/${DB_NAME:huilife}?currentSchema=public&stringtype=unspecified
+      user: ${DB_USR:huilife}
+      password: ${DB_PWD:huilife}
+      enabled: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PWD:Test!123}
+      username: ${REDIS_USER:}
+      database: ${REDIS_DB:0}
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:false}
+      lettuce:
+        pool:
+          enabled: true
+          min-idle: 4
+          max-wait: 60s
+          max-active: 16
+logging:
+  level:
+    root: ${LOGGER_ROOT_LEVEL:info}
+    com.ringcentral: ${LOGGER_SERVICE_LEVEL:info}
+
+environment:
+  region: ${ENVIRONMENT_REGION:region-local}
+
+

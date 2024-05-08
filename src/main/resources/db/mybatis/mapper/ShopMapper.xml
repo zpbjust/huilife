@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hui.life.db.mapper.ShopMapper">
+
+    <resultMap id="ShopResult" type="com.hui.life.db.entity.ShopEntity">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="address" property="address" />
+        <result column="category_id" property="categoryId" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.hui.life.db.entity.ShopEntity">
+        INSERT INTO shops (name, description, address, category_id,phone)
+        VALUES (#{name}, #{description}, #{address}, #{categoryId},#{phone})
+    </insert>
+
+    <select id="findById" resultMap="ShopResult">
+        SELECT * FROM shops WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="ShopResult">
+        SELECT * FROM shops
+    </select>
+
+    <select id="findByCategoryId" resultMap="ShopResult">
+        SELECT * FROM shops WHERE category_id = #{categoryId}
+    </select>
+
+    <update id="update" parameterType="com.hui.life.db.entity.ShopEntity">
+        UPDATE shops
+        SET name = #{name}, description = #{description}, address = #{address}, category_id = #{categoryId}, phone = #{phone}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM shops WHERE id = #{id}
+    </delete>
+
+</mapper>

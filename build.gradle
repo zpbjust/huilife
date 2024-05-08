@@ -1,0 +1,114 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id "org.springframework.boot" version "3.1.5"
+    id 'io.spring.dependency-management' version '1.1.2'
+    id 'org.openapi.generator' version '6.6.0'
+    id "org.flywaydb.flyway" version "7.15.0"
+}
+
+group 'com.hui.life'
+version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+            srcDirs "build/generated/generate-sources/src/main/java"
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.10'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'com.alibaba:transmittable-thread-local:2.12.1'
+    implementation 'com.google.guava:guava:32.1.2-jre'
+
+//	api 'com.ringcentral.webinar.pangu:pangu-log:23.2.30-25986-SNAPSHOT'
+
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.codehaus.janino:janino:3.1.8'
+
+    // flyway
+    implementation 'org.flywaydb:flyway-core:9.22.0'
+
+    // for db
+    runtimeOnly 'org.postgresql:postgresql:42.6.0'
+    implementation 'org.postgresql:postgresql:42.6.0'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+
+    // for kafka
+    implementation 'org.springframework.kafka:spring-kafka:3.0.7'
+
+    // for redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.apache.commons:commons-pool2:2.12.0'
+
+    // for cluster cron job
+    implementation 'com.github.kagkarlsson:db-scheduler-spring-boot-starter:11.7'
+
+    // for metrics
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.11.2'
+
+    implementation 'com.google.guava:guava:32.1.2-jre'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+openApiGenerate {
+    generatorName = 'spring'
+    inputSpec = "$rootDir/doc/api/huilife-openapi.yml".toString()
+    outputDir = "$buildDir/generated/generate-sources".toString()
+    apiPackage = 'com.hui.life.adapt'
+    generateApiTests = false
+    modelPackage = 'com.hui.life.model'
+    generateModelTests = false
+    generateModelDocumentation = false
+    configOptions.set(
+            useSpringBoot3: 'true',
+            annotationProcessor: 'false',
+            dateLibrary: 'java17',
+            library: 'spring-boot',
+            interfaceOnly: 'true',
+            useTags: 'true',
+            sourceFolder: 'src/main/java'
+    )
+    // other settings omitted
+    globalProperties.set([
+            apis: "",
+            models: "",
+            supportingFiles: "ApiUtil.java"
+    ])
+}
+
+compileJava {
+    dependsOn tasks.openApiGenerate
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

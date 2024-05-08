@@ -1,0 +1,38 @@
+server:
+  port: ${SERVER_PORT:8490}
+  shutdown: graceful
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+management:
+  server:
+    port: ${MANAGEMENT_PORT:8491}
+  endpoint:
+    health:
+    cache.time-to-live: 10s
+    enabled: true
+    probes:
+      enabled: true
+    show-details: always
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+    base-path: /manage
+    exposure:
+      include: '*'
+spring:
+  profiles:
+    active: ${SPRING_PROFILE:local}
+  application:
+    name: hui-life
+  flyway:
+    locations: classpath:/db/migration
+    baseline-on-migrate: true
+    baseline-version: '0'
+mybatis:
+  type-aliases-package: com.hui.life.db.entity
+  mapper-locations: classpath:db/mybatis/mapper/*Mapper.xml
+  config-location: classpath:db/mybatis/mybatisConfig.xml

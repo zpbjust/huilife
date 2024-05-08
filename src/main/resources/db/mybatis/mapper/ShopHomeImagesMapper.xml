@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hui.life.db.mapper.ShopHomeImagesMapper">
+
+    <resultMap id="ShopHomeImagesResult" type="com.hui.life.db.entity.ShopHomeImagesEntity">
+        <id column="id" property="id" />
+        <result column="shop_id" property="shopId" />
+        <result column="image_url" property="imageUrl" />
+        <result column="weight" property="weight" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.hui.life.db.entity.ShopHomeImagesEntity">
+        INSERT INTO shop_home_images (shop_id, image_url, weight)
+        VALUES (#{shopId}, #{imageUrl}, #{weight})
+    </insert>
+
+    <select id="findByShopId" resultMap="ShopHomeImagesResult">
+        SELECT * FROM shop_home_images WHERE shop_id = #{shopId}
+    </select>
+
+    <delete id="deleteByShopId">
+        DELETE FROM shop_home_images WHERE shop_id = #{shopId}
+    </delete>
+
+    <delete id="deleteById">
+        DELETE FROM shop_home_images WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.hui.life.db.entity.ShopHomeImagesEntity">
+        UPDATE shop_home_images
+        SET shop_id = #{shopId}, image_url = #{imageUrl}, weight = #{weight}
+        WHERE id = #{id}
+    </update>
+
+    <select id = "findById" resultMap="ShopHomeImagesResult">
+        SELECT * FROM shop_home_images WHERE id = #{id}
+    ></select>
+
+</mapper>

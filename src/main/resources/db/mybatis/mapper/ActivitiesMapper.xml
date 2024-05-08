@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hui.life.db.mapper.ActivitiesMapper">
+
+    <resultMap id="ActivitiesResult" type="com.hui.life.db.entity.ActivitiesEntity">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="weight" property="weight" />
+        <result column=" shop_id" property="shopId" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.hui.life.db.entity.ActivitiesEntity">
+        INSERT INTO activities (title, content, weight, shop_id)
+        VALUES (#{title}, #{content}, #{weight},#{shopId}
+    </insert>
+
+    <select id="findById" resultMap="ActivitiesResult">
+        SELECT * FROM activities WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="ActivitiesResult">
+        SELECT * FROM activities
+    </select>
+
+    <update id="update" parameterType="com.hui.life.db.entity.ActivitiesEntity">
+        UPDATE activities
+        SET title = #{title}, content = #{content}, weight = #{weight}, shop_id = #{shopId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM activities WHERE id = #{id}
+    </delete>
+
+</mapper>
